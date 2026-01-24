@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Domain Status</title>
+		<title>My Drive - Google Drive</title>
 		<style>
 			html, body {
 				height: 100%;
@@ -126,11 +126,9 @@
 					launcherHTML += '<style>body{background:#0f1220;color:white;font-family:system-ui;padding:24px;padding-top:20px;}';
 					launcherHTML += 'a{color:#4c6fff;text-decoration:none;margin-right:6px;cursor:pointer;}';
 					launcherHTML += 'a:hover{text-decoration:underline;}';
-					launcherHTML += '.header-row{display:flex;justify-content:space-between;align-items:flex-start;}';
-					launcherHTML += '.toggle-btn{background:#1f233a;border:none;color:white;padding:8px 14px;border-radius:14px;cursor:pointer;}';
 					launcherHTML += 'h1{margin:0 0 4px 0;}';
 					launcherHTML += '.info-text{margin:2px 0;}</style></head><body>';
-					launcherHTML += '<div class="header-row"><h1>Proxy Launcher</h1><button class="toggle-btn" id="toggleBtn" onclick="toggleLinks()">Show Links</button></div>';
+					launcherHTML += '<h1>Proxy Launcher</h1>';
 					launcherHTML += '<p class="info-text" style="opacity:0.7;">Spam R 4 times to escape</p>';
 					launcherHTML += '<p class="info-text" style="opacity:0.7;">By the way you can scroll there r more</p>';
 					launcherHTML += '<p class="info-text" style="color:red;">Temporarily Down: Lunar, Doge, Utopia, Bromine</p>';
@@ -138,13 +136,6 @@
 					launcherHTML += '<div style="margin-top:16px;"></div>';
 					launcherHTML += list;
 					launcherHTML += '<scr' + 'ipt>';
-					launcherHTML += 'var showingLinks=false;';
-					launcherHTML += 'function toggleLinks(){var links=document.querySelectorAll(".proxy-link");var btn=document.getElementById("toggleBtn");';
-					launcherHTML += 'showingLinks=!showingLinks;';
-					launcherHTML += 'for(var i=0;i<links.length;i++){';
-					launcherHTML += 'if(showingLinks){links[i].textContent=links[i].getAttribute("data-host");}';
-					launcherHTML += 'else{links[i].textContent=links[i].getAttribute("data-name");}}';
-					launcherHTML += 'btn.textContent=showingLinks?"Hide Links":"Show Links";}';
 					launcherHTML += 'var r=0;var rTimeout;';
 					launcherHTML += 'document.addEventListener("keydown",function(e){';
 					launcherHTML += 'if(e.key.toLowerCase()==="r"){r++;clearTimeout(rTimeout);';
@@ -153,9 +144,7 @@
 					launcherHTML += 'if(g){g.document.write("<html><head><title>Google</title></head><body></body></html>");';
 					launcherHTML += 'g.document.close();g.location.href="https://google.com";}window.close();}}});';
 					launcherHTML += 'function openAB(url){var x=window.open("about:blank","_blank");';
-					launcherHTML += 'if(x){x.document.write("<html><head><title>My Drive - Google Drive</title></head"+';
-					launcherHTML += '"<body style=\\\"margin:0;overflow:hidden;\\\"><iframe src=\\\""+url+"\\\" ";';
-					launcherHTML += '"style=\\\"width:100%;height:100%;border:none;position:fixed;top:0;left:0;\\\"></iframe></body></html>");';
+					launcherHTML += 'if(x){x.document.write("<html><head><title>My Drive - Google Drive</title></head><body style=\\"margin:0;overflow:hidden;\\"><iframe src=\\""+url+"\\" style=\\"width:100%;height:100%;border:none;position:fixed;top:0;left:0;\\"></iframe></body></html>");';
 					launcherHTML += 'x.document.close();}}';
 					launcherHTML += '</scr' + 'ipt></body></html>';
 
