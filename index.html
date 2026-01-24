@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Domain Status</title>
+		<style>
+			html, body {
+				height: 100%;
+				margin: 0;
+				background: #ffffff;
+				color: #000000;
+				font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+			}
+
+			.container {
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+			}
+
+			h1 {
+				margin: 0 0 12px 0;
+				font-size: clamp(28px, 6vw, 48px);
+				font-weight: 600;
+			}
+
+			p {
+				margin: 0;
+				font-size: clamp(14px, 3vw, 18px);
+			}
+
+			/* Command bar */
+			.cmd-bar {
+				display: none;
+				position: fixed;
+				top: 35%; /* a little higher than the middle */
+				left: 50%;
+				transform: translateX(-50%);
+				width: 60%;
+				max-width: 800px;
+				background: #000000;
+				color: #ffffff;
+				padding: 12px 16px;
+				box-sizing: border-box;
+			}
+
+			.cmd-row {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+
+			.cmd-label {
+				white-space: nowrap;
+			}
+
+			.cmd-input {
+				flex: 1;
+				background: transparent;
+				border: none;
+				outline: none;
+				color: #ffffff;
+				font: inherit;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Domain does not exist, but was left in the registry</h1>
+			<p>Domain can be rebought until May 26, 2026</p>
+		</div>
+
+		<div id="cmdBar" class="cmd-bar" role="dialog" aria-label="Command Line">
+			<div class="cmd-row">
+				<span class="cmd-label">Command Line</span>
+				<input id="cmdInput" class="cmd-input" type="text" autocomplete="off" spellcheck="false" />
+			</div>
+		</div>
+
+		<script>
+			(function () {
+				const bar = document.getElementById('cmdBar');
+				const input = document.getElementById('cmdInput');
+
+				// Proxy list + launcher logic
+				const proxies = [
+					{ order: 1, name: "intersteller", host: "intersteller.undoanarchy.rocks", desc: "Very Familiar" },
+					{ order: 2, name: "selenite", host: "selenite.undoanarchy.rocks", desc: "Best for games" },
+					{ order: 3, name: "doge", host: "doge.undoanarchy.rocks", desc: "Best for searching, in settings please change search engine to DuckDuckGo and Proxy to Scramjet" },
+					{ order: 4, name: "quasar", host: "quasar.undoanarchy.rocks", desc: "Movies, games, good search" },
+					{ order: 5, name: "utopia", host: "utopia.undoanarchy.rocks", desc: "Great overall" },
+					{ order: 6, name: "void", host: "void.undoanarchy.rocks", desc: "Great games, cool features" },
+					{ order: 7, name: "55gms", host: "55gms.undoanarchy.rocks", desc: "Overall good" },
+					{ order: 8, name: "bromine", host: "bromine.undoanarchy.rocks", desc: "Decent" },
+					{ order: 9, name: "galaxy", host: "galaxy.undoanarchy.rocks", desc: "OS-type look" },
+					{ order: 10, name: "glint", host: "glint.undoanarchy.rocks", desc: "Low latency" },
+					{ order: 11, name: "lunar", host: "lunar.undoanarchy.rocks", desc: "Great games" },
+					{ order: 12, name: "petezah", host: "petezah.undoanarchy.rocks", desc: "Good games, bad search" },
+					{ order: 13, name: "shadow", host: "shadow.undoanarchy.rocks", desc: "Mid for searching, no games" },
+					{ order: 14, name: "uniub", host: "uniub.undoanarchy.rocks", desc: "Decent overall" },
+					{ order: 15, name: "velara", host: "velara.undoanarchy.rocks", desc: "Good games" }
+				];
+
+				function openLauncher() {
+					const w = window.open("about:blank", "_blank");
+					if (!w) return;
+
+					let list = "";
+					const sortedProxies = proxies.slice().sort((a, b) => a.order - b.order);
+					for (let i = 0; i < sortedProxies.length; i++) {
+						const p = sortedProxies[i];
+						const color = p.order === 1 ? "red" : p.order === 2 ? "dodgerblue" : "white";
+						const capName = p.name.charAt(0).toUpperCase() + p.name.slice(1);
+						list += '<div style="margin-bottom:14px;">';
+						list += '<b>' + p.order + '. ' + capName + '</b><br>';
+						list += '<a href="javascript:void(0)" onclick="openAB(' + "'" + 'https://' + p.host + "'" + ')" style="cursor:pointer;font-size:18px;" class="proxy-link" data-name="' + capName + '" data-host="' + p.host + '">' + capName + '</a>';
+						list += '<div style="color:' + color + '; font-size:14px;">' + p.desc + '</div>';
+						list += '</div>';
+					}
+
+					let launcherHTML = '<!DOCTYPE html><html><head><title>My Drive - Google Drive</title>';
+					launcherHTML += '<style>body{background:#0f1220;color:white;font-family:system-ui;padding:24px;padding-top:20px;}';
+					launcherHTML += 'a{color:#4c6fff;text-decoration:none;margin-right:6px;cursor:pointer;}';
+					launcherHTML += 'a:hover{text-decoration:underline;}';
+					launcherHTML += '.header-row{display:flex;justify-content:space-between;align-items:flex-start;}';
+					launcherHTML += '.toggle-btn{background:#1f233a;border:none;color:white;padding:8px 14px;border-radius:14px;cursor:pointer;}';
+					launcherHTML += 'h1{margin:0 0 4px 0;}';
+					launcherHTML += '.info-text{margin:2px 0;}</style></head><body>';
+					launcherHTML += '<div class="header-row"><h1>Proxy Launcher</h1><button class="toggle-btn" id="toggleBtn" onclick="toggleLinks()">Show Links</button></div>';
+					launcherHTML += '<p class="info-text" style="opacity:0.7;">Spam R 4 times to escape</p>';
+					launcherHTML += '<p class="info-text" style="opacity:0.7;">By the way you can scroll there r more</p>';
+					launcherHTML += '<p class="info-text" style="color:red;">Temporarily Down: Lunar, Doge, Utopia, Bromine</p>';
+					launcherHTML += '<p class="info-text" style="color:yellow;font-weight:bold;">ALL PROXIES OPEN IN ABOUT:BLANK, PLEASE DON\'T EXPOSE LINK!!!</p>';
+					launcherHTML += '<div style="margin-top:16px;"></div>';
+					launcherHTML += list;
+					launcherHTML += '<scr' + 'ipt>';
+					launcherHTML += 'var showingLinks=false;';
+					launcherHTML += 'function toggleLinks(){var links=document.querySelectorAll(".proxy-link");var btn=document.getElementById("toggleBtn");';
+					launcherHTML += 'showingLinks=!showingLinks;';
+					launcherHTML += 'for(var i=0;i<links.length;i++){';
+					launcherHTML += 'if(showingLinks){links[i].textContent=links[i].getAttribute("data-host");}';
+					launcherHTML += 'else{links[i].textContent=links[i].getAttribute("data-name");}}';
+					launcherHTML += 'btn.textContent=showingLinks?"Hide Links":"Show Links";}';
+					launcherHTML += 'var r=0;var rTimeout;';
+					launcherHTML += 'document.addEventListener("keydown",function(e){';
+					launcherHTML += 'if(e.key.toLowerCase()==="r"){r++;clearTimeout(rTimeout);';
+					launcherHTML += 'rTimeout=setTimeout(function(){r=0;},1000);';
+					launcherHTML += 'if(r>=4){r=0;var g=window.open("about:blank","_blank");';
+					launcherHTML += 'if(g){g.document.write("<html><head><title>Google</title></head><body></body></html>");';
+					launcherHTML += 'g.document.close();g.location.href="https://google.com";}window.close();}}});';
+					launcherHTML += 'function openAB(url){var x=window.open("about:blank","_blank");';
+					launcherHTML += 'if(x){x.document.write("<html><head><title>My Drive - Google Drive</title></head"+';
+					launcherHTML += '"<body style=\\\"margin:0;overflow:hidden;\\\"><iframe src=\\\""+url+"\\\" ";';
+					launcherHTML += '"style=\\\"width:100%;height:100%;border:none;position:fixed;top:0;left:0;\\\"></iframe></body></html>");';
+					launcherHTML += 'x.document.close();}}';
+					launcherHTML += '</scr' + 'ipt></body></html>';
+
+					w.document.write(launcherHTML);
+					w.document.close();
+
+					window.location.href = "https://google.com";
+				}
+
+				function showBar() {
+					bar.style.display = 'block';
+					input.value = '';
+					input.focus();
+				}
+
+				function hideBar() {
+					bar.style.display = 'none';
+				}
+
+				function barIsVisible() {
+					return bar.style.display === 'block';
+				}
+
+				// Toggle command bar on backtick
+				document.addEventListener('keydown', (e) => {
+					if (e.code === 'Backquote' && !barIsVisible()) {
+						e.preventDefault();
+						showBar();
+					} else if (e.key === 'Escape' && barIsVisible()) {
+						e.preventDefault();
+						hideBar();
+					}
+				});
+
+				// Handle Enter inside command bar
+				input.addEventListener('keydown', (e) => {
+					if (e.key === 'Enter') {
+						const cmd = input.value.trim();
+						if (cmd.toLowerCase() === 'proxyplease') {
+							// Launch about:blank with launcher and redirect current tab to Google
+							openLauncher();
+						}
+						input.value = '';
+					} else if (e.key === 'Escape') {
+						hideBar();
+					}
+				});
+			})();
+		</script>
+	</body>
+</html>
