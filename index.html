@@ -12,7 +12,6 @@
 				color: #000000;
 				font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 			}
-
 			.container {
 				height: 100%;
 				display: flex;
@@ -21,57 +20,21 @@
 				justify-content: center;
 				text-align: center;
 			}
-
 			h1 {
 				margin: 0 0 12px 0;
 				font-size: clamp(28px, 6vw, 48px);
 				font-weight: 600;
 			}
-
 			p {
 				margin: 0;
 				font-size: clamp(14px, 3vw, 18px);
-			}
-
-			/* Command bar */
-			.cmd-bar {
-				display: none;
-				position: fixed;
-				top: 35%; /* a little higher than the middle */
-				left: 50%;
-				transform: translateX(-50%);
-				width: 60%;
-				max-width: 800px;
-				background: #000000;
-				color: #ffffff;
-				padding: 12px 16px;
-				box-sizing: border-box;
-			}
-
-			.cmd-row {
-				display: flex;
-				align-items: center;
-				gap: 12px;
-			}
-
-			.cmd-label {
-				white-space: nowrap;
-			}
-
-			.cmd-input {
-				flex: 1;
-				background: transparent;
-				border: none;
-				outline: none;
-				color: #ffffff;
-				font: inherit;
 			}
 		</style>
 	</head>
 	<body>
 		<div class="container">
-			<h1>Free all in one Pr0xy</h1>
-			<p>To access, press backtick (button left of 1) and type "pr0xyplease" then press enter. <br>
+			<h1>Free all in one Proxy</h1>
+			<p><span style="font-size: 1.3em; text-decoration: underline;">To access, press backtick</span> <br>
 				This link goes away May 26, 2026. Share all you want. <br>
 				If you paid for this, you got scammed. <br>
 				New links come out often ask people for them or you can also pay <br>
@@ -79,23 +42,12 @@
 			</p>
 		</div>
 
-		<div id="cmdBar" class="cmd-bar" role="dialog" aria-label="Command Line">
-			<div class="cmd-row">
-				<span class="cmd-label">Command Line</span>
-				<input id="cmdInput" class="cmd-input" type="text" autocomplete="off" spellcheck="false" />
-			</div>
-		</div>
-
 		<script>
 			(function () {
-				const bar = document.getElementById('cmdBar');
-				const input = document.getElementById('cmdInput');
-
-				// Proxy list + launcher logic
 				const proxies = [
 					{ order: 1, name: "intersteller", host: "interstellerkeepthisasecret.undoanarchy.rocks", desc: "Very Familiar" },
 					{ order: 2, name: "selenite", host: "selenitekeepthisasecret.undoanarchy.rocks", desc: "Best for games" },
-					{ order: 3, name: "doge", host: "dogekeepthisasecret.undoanarchy.rocks", desc: "Best for searching, in settings please change search engine to DuckDuckGo and Proxy to Scramjet" },
+					{ order: 3, name: "doge", host: "dogekeepthisasecret.undoanarchy.rocks", desc: "BEST OVERALL/NO ADS, in settings please change search engine to DuckDuckGo and Proxy to Scramjet" },
 					{ order: 4, name: "quasar", host: "quasarkeepthisasecret.undoanarchy.rocks", desc: "Movies, games, good search" },
 					{ order: 5, name: "utopia", host: "utopiakeepthisasecret.undoanarchy.rocks", desc: "Great overall" },
 					{ order: 6, name: "void", host: "voidkeepthisasecret.undoanarchy.rocks", desc: "Great games, cool features" },
@@ -118,29 +70,52 @@
 					const sortedProxies = proxies.slice().sort((a, b) => a.order - b.order);
 					for (let i = 0; i < sortedProxies.length; i++) {
 						const p = sortedProxies[i];
-						const color = p.order === 1 ? "red" : p.order === 2 ? "dodgerblue" : "white";
+						const color = p.order === 1 ? "red" : p.order === 2 ? "dodgerblue" : p.order === 3 ? "lime" : "white";
 						const capName = p.name.charAt(0).toUpperCase() + p.name.slice(1);
+						const fullUrl = 'https://' + p.host;
 						list += '<div style="margin-bottom:14px;">';
 						list += '<b>' + p.order + '. ' + capName + '</b><br>';
-						list += '<a href="javascript:void(0)" onclick="openAB(' + "'" + 'https://' + p.host + "'" + ')" style="cursor:pointer;font-size:18px;" class="proxy-link" data-name="' + capName + '" data-host="' + p.host + '">' + capName + '</a>';
+						list += '<a href="javascript:void(0)" onclick="openAB(' + "'" + fullUrl + "'" + ')" style="cursor:pointer;font-size:18px;" class="proxy-link" data-name="' + capName + '" data-host="' + p.host + '">' + capName + '</a>';
+						list += '<a href="' + fullUrl + '" target="_blank" class="direct-link" style="display:none;cursor:pointer;font-size:14px;margin-left:8px;color:#ff6b6b;">No about:blank</a>';
 						list += '<div style="color:' + color + '; font-size:14px;">' + p.desc + '</div>';
 						list += '</div>';
 					}
 
 					let launcherHTML = '<!DOCTYPE html><html><head><title>My Drive - Google Drive</title>';
-					launcherHTML += '<style>body{background:#0f1220;color:white;font-family:system-ui;padding:24px;padding-top:20px;}';
-					launcherHTML += 'a{color:#4c6fff;text-decoration:none;margin-right:6px;cursor:pointer;}';
-					launcherHTML += 'a:hover{text-decoration:underline;}';
-					launcherHTML += 'h1{margin:0 0 4px 0;}';
-					launcherHTML += '.info-text{margin:2px 0;}</style></head><body>';
+					launcherHTML += '<style>body{background:#0f1220;color:white;font-family:system-ui;padding:24px;padding-top:20px;position:relative;}';
+					launcherHTML += 'a{color:#4c6fff;text-decoration:none;margin-right:6px;cursor:pointer;}a:hover{text-decoration:underline;}';
+					launcherHTML += 'h1{margin:0 0 4px 0;display:inline-block;}';
+					launcherHTML += '.info-text{margin:2px 0;}';
+					launcherHTML += '.help-btn{position:absolute;top:20px;right:24px;width:40px;height:40px;background:#1f233a;border:none;color:white;font-size:28px;font-weight:bold;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}';
+					launcherHTML += '.help-btn:hover{background:#2a2f4a;}';
+					launcherHTML += '.help-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:1000;align-items:center;justify-content:center;}';
+					launcherHTML += '.help-content{background:#0f1220;border:2px solid #4c6fff;padding:30px;max-width:700px;max-height:80vh;overflow-y:auto;border-radius:8px;}';
+					launcherHTML += '.help-content h2{margin-top:0;color:#4c6fff;}';
+					launcherHTML += '.help-content p{line-height:1.6;margin:12px 0;}';
+					launcherHTML += '.close-btn{background:#4c6fff;border:none;color:white;padding:8px 20px;cursor:pointer;border-radius:4px;margin-top:20px;}';
+					launcherHTML += '.close-btn:hover{background:#6080ff;}';
+					launcherHTML += '</style></head><body>';
+					launcherHTML += '<button class="help-btn" onclick="showHelp()">?</button>';
 					launcherHTML += '<h1>Proxy Launcher</h1>';
+					launcherHTML += '<h3>PLEASE READ EVERYTHING BELOW AND THE HELP SECTION (? button in the top right)</h3>';
 					launcherHTML += '<p class="info-text" style="opacity:0.7;">Spam R 4 times to escape</p>';
 					launcherHTML += '<p class="info-text" style="opacity:0.7;">By the way you can scroll there r more</p>';
+					launcherHTML += '<p class="info-text" style="color:orange;cursor:pointer;text-decoration:underline;" onclick="toggleDirectLinks()">IF YOU WANT TO USE THE PROXY IN FULL SCREEN PRESS THIS AND THEN ACCESS THE LINK. BE SURE TO HIDE THE URL THOUGH</p>';
 					launcherHTML += '<p class="info-text" style="color:red;">LINKS SOMETIMES GO DOWN BE PATIENT but its rare</p>';
 					launcherHTML += '<p class="info-text" style="color:yellow;font-weight:bold;">ALL PROXIES OPEN IN ABOUT:BLANK, PLEASE DON\'T EXPOSE LINK!!!</p>';
 					launcherHTML += '<div style="margin-top:16px;"></div>';
 					launcherHTML += list;
+					launcherHTML += '<div class="help-modal" id="helpModal" onclick="if(event.target===this)hideHelp()">';
+					launcherHTML += '<div class="help-content">';
+					launcherHTML += '<h2>HELP</h2>';
+					launcherHTML += '<p>Notes (please read): The best overall proxy by far is <b>Doge</b> but please follow the instructions under the <b>Doge</b> link, and the best for <span style="color:#ff9500;">games</span> is <b>Selenite</b> and <b>Petezah</b> but for <span style="color:#ff9500;">games</span> I recommend you try them all. For special and good <span style="color:#ff9500;">games</span> you won\'t find anywhere else, go to crazygames.com on <b>Doge</b>. For them <span style="color:#00ff00;">Minecraft</span> kids, go to <b>Doge</b> and either put in "darkfordge.surge.sh" and choose Game, OR go to <span style="color:#ff9500;">Games</span> on <b>Doge</b> and choose <span style="color:#00ff00;">Minecraft</span>. The second method is better (<u>HAS EVERY VERSION OF MINECRAFT UP TO 1.21!!! AND THEY GIVE YOU WORKING SERVERS</u>) but its a bit funky. For <span style="color:#ff0000;">movies</span>, go to <b>Doge</b> and go to "cineby.gd" and watch. <u>THIS IS IN GENERAL, BUT IN SOME PROXIES, YOU MAY GET ADS AND POPUPS JUST CLOSE THEM (DOGE IS THE ONLY CONFIRMED PROXY TO HAVE NO ADS).</u></p>';
+					launcherHTML += '<button class="close-btn" onclick="hideHelp()">Close</button>';
+					launcherHTML += '</div></div>';
 					launcherHTML += '<scr' + 'ipt>';
+					launcherHTML += 'var showingDirect=false;';
+					launcherHTML += 'function showHelp(){document.getElementById("helpModal").style.display="flex";}';
+					launcherHTML += 'function hideHelp(){document.getElementById("helpModal").style.display="none";}';
+					launcherHTML += 'function toggleDirectLinks(){var links=document.querySelectorAll(".direct-link");showingDirect=!showingDirect;for(var i=0;i<links.length;i++){links[i].style.display=showingDirect?"inline":"none";}}';
 					launcherHTML += 'var r=0;var rTimeout;';
 					launcherHTML += 'document.addEventListener("keydown",function(e){';
 					launcherHTML += 'if(e.key.toLowerCase()==="r"){r++;clearTimeout(rTimeout);';
@@ -159,42 +134,10 @@
 					window.location.href = "https://google.com";
 				}
 
-				function showBar() {
-					bar.style.display = 'block';
-					input.value = '';
-					input.focus();
-				}
-
-				function hideBar() {
-					bar.style.display = 'none';
-				}
-
-				function barIsVisible() {
-					return bar.style.display === 'block';
-				}
-
-				// Toggle command bar on backtick
 				document.addEventListener('keydown', (e) => {
-					if (e.code === 'Backquote' && !barIsVisible()) {
+					if (e.code === 'Backquote') {
 						e.preventDefault();
-						showBar();
-					} else if (e.key === 'Escape' && barIsVisible()) {
-						e.preventDefault();
-						hideBar();
-					}
-				});
-
-				// Handle Enter inside command bar
-				input.addEventListener('keydown', (e) => {
-					if (e.key === 'Enter') {
-						const cmd = input.value.trim();
-						if (cmd.toLowerCase() === 'pr0xyplease') {
-							// Launch about:blank with launcher and redirect current tab to Google
-							openLauncher();
-						}
-						input.value = '';
-					} else if (e.key === 'Escape') {
-						hideBar();
+						openLauncher();
 					}
 				});
 			})();
