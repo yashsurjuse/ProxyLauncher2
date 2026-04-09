@@ -112,7 +112,7 @@
 					{ name: "Galaxy", host: "galaxykeepthisasecret.undoanarchy.rocks", desc: "OS-like look with a polished interface." },
 					{ name: "Glint", host: "glintkeepthisasecret.undoanarchy.rocks", desc: "Lightweight and responsive." },
 					{ name: "Lunar", host: "lunarkeepthisasecret.undoanarchy.rocks", desc: "Good for games and quick access." },
-					{ name: "UniUb", host: "uniubkeepthisasecret.undoanarchy.rocks", desc: "Balanced option for general use." },
+					{ name: "UniUB", host: "uniubkeepthisasecret.undoanarchy.rocks", desc: "Balanced option for general use." },
 					{ name: "Velara", host: "velarakeepthisasecret.undoanarchy.rocks", desc: "Another decent pick for games." }
 				];
 
@@ -122,6 +122,13 @@
 					const cards = proxies.map((proxy, index) => {
 						const directUrl = "https://" + proxy.host;
 						const searchText = (proxy.name + " " + proxy.desc).toLowerCase();
+						const directOnly = ["glint", "lunar", "uniub"].includes(proxy.name.toLowerCase());
+						const actionButtons = directOnly
+							? ['<button class="card-btn" type="button" data-action="direct" data-url="' + directUrl + '">Direct Open</button>'].join("")
+							: [
+								'<button class="card-btn" type="button" data-action="blank" data-url="' + directUrl + '">About:blank</button>',
+								'<button class="card-btn secondary-action" type="button" data-action="direct" data-url="' + directUrl + '">Direct Open</button>'
+							].join("");
 						return [
 							'<article class="proxy-card" data-search="' + searchText + '">',
 							'<div class="card-head">',
@@ -132,8 +139,7 @@
 							'</div>',
 							'<p>' + proxy.desc + '</p>',
 							'<div class="card-actions">',
-							'<button class="card-btn" type="button" data-action="blank" data-url="' + directUrl + '">About:blank</button>',
-							'<button class="card-btn secondary-action" type="button" data-action="direct" data-url="' + directUrl + '">Direct Open</button>',
+							actionButtons,
 							'</div>',
 							'</article>'
 						].join("");
