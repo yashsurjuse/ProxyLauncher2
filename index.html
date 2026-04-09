@@ -3,143 +3,287 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>My Drive - Google Drive</title>
+		<title>Launcher</title>
 		<style>
-			html, body {
-				height: 100%;
+			:root {
+				color-scheme: dark;
+				--bg: #000000;
+				--panel: #0b0b0b;
+				--panel-alt: #111111;
+				--border: #2a2a2a;
+				--text: #ffffff;
+				--muted: #b7b7b7;
+				--shadow: 0 18px 42px rgba(0, 0, 0, 0.55);
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			html,
+			body {
+				min-height: 100%;
 				margin: 0;
-				background: #ffffff;
-				color: #000000;
+			}
+
+			body {
+				background: var(--bg);
+				color: var(--text);
 				font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 			}
-			.container {
-				height: 100%;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				text-align: center;
+
+			.page {
+				min-height: 100vh;
+				display: grid;
+				place-items: center;
+				padding: 24px;
 			}
-			h1 {
-				margin: 0 0 12px 0;
-				font-size: clamp(28px, 6vw, 48px);
-				font-weight: 600;
+
+			.hero {
+				width: min(680px, 100%);
+				padding: 32px;
+				border: 1px solid var(--border);
+				border-radius: 20px;
+				background: var(--panel);
+				box-shadow: var(--shadow);
 			}
-			p {
+
+			.hero h1 {
 				margin: 0;
-				font-size: clamp(14px, 3vw, 18px);
+				font-size: clamp(2.2rem, 6vw, 4rem);
+				line-height: 0.95;
+				letter-spacing: -0.05em;
+			}
+
+			.actions {
+				display: flex;
+				gap: 12px;
+				margin-top: 24px;
+				flex-wrap: wrap;
+			}
+
+			button {
+				appearance: none;
+				border: 1px solid var(--border);
+				border-radius: 14px;
+				padding: 14px 18px;
+				font: inherit;
+				font-weight: 700;
+				cursor: pointer;
+				transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+			}
+
+			.primary {
+				background: #ffffff;
+				color: #000000;
+			}
+
+			.secondary {
+				background: var(--panel-alt);
+				color: var(--text);
+			}
+
+			button:hover {
+				transform: translateY(-1px);
 			}
 		</style>
 	</head>
 	<body>
-		<div class="container">
-			<h1>Free all in one Proxy</h1>
-			<p><span style="font-size: 1.3em; text-decoration: underline;">To access, press backtick</span> <br>
-				This link goes away May 26, 2026. Share all you want. <br>
-				If you paid for this, you got scammed. <br>
-				New links come out often ask people for them or you can also pay <br>
-				Please avoid showing the raw link infront of te@chers (be in about:blank) dont want it getting blocked right
-			</p>
+		<div class="page">
+			<section class="hero">
+				<h1>Pr0xy Launcher</h1>
+				<p class="lead">Open the launcher to browse the list. About:blank keeps the pr0xy hidden, and Direct Open opens like normal. <br> This link goes away May 26, 2026. Share all you want.
+<br> If you paid for this, you got scammed.
+<br> New links come out often I'll add them as they become available.</p>
+				<div class="actions">
+					<button class="primary" id="launchBtn" type="button">Open launcher</button>
+				</div>
+			</section>
 		</div>
 
 		<script>
 			(function () {
 				const proxies = [
-					{ order: 1, name: "intersteller", host: "interstellerkeepthisasecret.undoanarchy.rocks", desc: "Very Familiar" },
-					{ order: 2, name: "selenite", host: "selenitekeepthisasecret.undoanarchy.rocks", desc: "Best for games" },
-					{ order: 3, name: "doge", host: "dogekeepthisasecret.undoanarchy.rocks", desc: "BEST OVERALL/NO ADS, in settings please change search engine to DuckDuckGo and Proxy to Scramjet" },
-					{ order: 4, name: "quasar", host: "quasarkeepthisasecret.undoanarchy.rocks", desc: "Movies, games, good search" },
-					{ order: 5, name: "utopia", host: "utopiakeepthisasecret.undoanarchy.rocks", desc: "Great overall" },
-					{ order: 6, name: "void", host: "voidkeepthisasecret.undoanarchy.rocks", desc: "Great games, cool features" },
-					{ order: 7, name: "55gms", host: "55gmskeepthisasecret.undoanarchy.rocks", desc: "Overall good" },
-					{ order: 8, name: "bromine", host: "brominekeepthisasecret.undoanarchy.rocks", desc: "Decent" },
-					{ order: 9, name: "galaxy", host: "galaxykeepthisasecret.undoanarchy.rocks", desc: "OS-type look" },
-					{ order: 10, name: "glint", host: "glintkeepthisasecret.undoanarchy.rocks", desc: "Low latency" },
-					{ order: 11, name: "lunar", host: "lunarkeepthisasecret.undoanarchy.rocks", desc: "Great games" },
-					{ order: 12, name: "petezah", host: "petezahkeepthisasecret.undoanarchy.rocks", desc: "Good games, bad search" },
-					{ order: 13, name: "shadow", host: "shadowkeepthisasecret.undoanarchy.rocks", desc: "Mid for searching, no games" },
-					{ order: 14, name: "uniub", host: "uniubkeepthisasecret.undoanarchy.rocks", desc: "Decent overall" },
-					{ order: 15, name: "velara", host: "velarakeepthisasecret.undoanarchy.rocks", desc: "Good games" }
+					{ name: "Intersteller", host: "interstellerkeepthisasecret.undoanarchy.rocks", desc: "Familiar layout and a steady default choice." },
+					{ name: "Selenite", host: "selenitekeepthisasecret.undoanarchy.rocks", desc: "Good for games and quick navigation.", featured: true },
+					{ name: "Doge", host: "dogekeepthisasecret.undoanarchy.rocks", desc: "Strong all-around pick with the cleanest feel.", featured: true },
+					{ name: "Quasar", host: "quasarkeepthisasecret.undoanarchy.rocks", desc: "Solid for browsing, games, and media." },
+					{ name: "55gms", host: "55gmskeepthisasecret.undoanarchy.rocks", desc: "Simple and dependable overall." },
+					{ name: "Galaxy", host: "galaxykeepthisasecret.undoanarchy.rocks", desc: "OS-like look with a polished interface." },
+					{ name: "Glint", host: "glintkeepthisasecret.undoanarchy.rocks", desc: "Lightweight and responsive." },
+					{ name: "Lunar", host: "lunarkeepthisasecret.undoanarchy.rocks", desc: "Good for games and quick access." },
+					{ name: "UniUb", host: "uniubkeepthisasecret.undoanarchy.rocks", desc: "Balanced option for general use." },
+					{ name: "Velara", host: "velarakeepthisasecret.undoanarchy.rocks", desc: "Another decent pick for games." }
 				];
 
-				function openLauncher() {
-					const w = window.open("about:blank", "_blank");
-					if (!w) return;
+				const launchBtn = document.getElementById("launchBtn");
 
-					let list = "";
-					const sortedProxies = proxies.slice().sort((a, b) => a.order - b.order);
-					for (let i = 0; i < sortedProxies.length; i++) {
-						const p = sortedProxies[i];
-						const color = p.order === 1 ? "red" : p.order === 2 ? "dodgerblue" : p.order === 3 ? "lime" : "white";
-						const capName = p.name.charAt(0).toUpperCase() + p.name.slice(1);
-						const fullUrl = 'https://' + p.host;
-						list += '<div style="margin-bottom:14px;">';
-						list += '<b>' + p.order + '. ' + capName + '</b><br>';
-						list += '<a href="javascript:void(0)" onclick="openAB(' + "'" + fullUrl + "'" + ')" style="cursor:pointer;font-size:18px;" class="proxy-link" data-name="' + capName + '" data-host="' + p.host + '">' + capName + '</a>';
-						list += '<a href="' + fullUrl + '" target="_blank" class="direct-link" style="display:none;cursor:pointer;font-size:14px;margin-left:8px;color:#ff6b6b;">No about:blank</a>';
-						list += '<div style="color:' + color + '; font-size:14px;">' + p.desc + '</div>';
-						list += '</div>';
+				function buildLauncherHTML() {
+					const cards = proxies.map((proxy, index) => {
+						const directUrl = "https://" + proxy.host;
+						const searchText = (proxy.name + " " + proxy.desc).toLowerCase();
+						return [
+							'<article class="proxy-card" data-search="' + searchText + '">',
+							'<div class="card-head">',
+							'<div>',
+							'<div class="card-title">' + proxy.name + '</div>',
+							'<div class="card-meta">' + String(index + 1).padStart(2, "0") + '</div>',
+							'</div>',
+							'</div>',
+							'<p>' + proxy.desc + '</p>',
+							'<div class="card-actions">',
+							'<button class="card-btn" type="button" data-action="blank" data-url="' + directUrl + '">About:blank</button>',
+							'<button class="card-btn secondary-action" type="button" data-action="direct" data-url="' + directUrl + '">Direct Open</button>',
+							'</div>',
+							'</article>'
+						].join("");
+					}).join("");
+
+					return `
+						<!DOCTYPE html>
+						<html lang="en">
+						<head>
+							<meta charset="UTF-8" />
+							<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+							<title>Proxy Launcher</title>
+							<style>
+								:root { color-scheme: dark; --bg: #000; --panel: #0b0b0b; --panel-alt: #111; --border: #2a2a2a; --text: #fff; --muted: #b7b7b7; --shadow: 0 18px 42px rgba(0,0,0,.55); }
+								* { box-sizing: border-box; }
+								html, body { min-height: 100%; margin: 0; }
+								body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+								button, input { font: inherit; }
+								button { appearance: none; border: 1px solid var(--border); border-radius: 14px; padding: 13px 14px; cursor: pointer; }
+								.launcher-shell { min-height: 100vh; padding: 24px; }
+								.launcher-wrap { width: min(1200px, 100%); margin: 0 auto; }
+								.topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px; margin-bottom: 18px; background: var(--panel); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow); }
+								.title h1 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; letter-spacing: -0.05em; position: relative; top: -2px; }
+								.title p { margin: 8px 0 0; color: var(--muted); }
+								.search-group { width: min(100%, 340px); }
+								.search { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--border); background: var(--panel-alt); color: var(--text); }
+								.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; grid-auto-rows: 1fr; align-items: stretch; }
+								.proxy-card { display: flex; flex-direction: column; gap: 16px; height: 100%; min-height: 240px; padding: 22px; background: var(--panel); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); }
+								.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+								.card-title { margin: 0; font-size: 1.45rem; line-height: 1.05; letter-spacing: -0.03em; position: relative; top: -2px; }
+								.card-meta { margin-top: 4px; color: var(--muted); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; }
+								.badge { display: inline-flex; align-items: center; justify-content: center; padding: 7px 10px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel-alt); color: var(--text); font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
+								.proxy-card p { margin: 0; color: var(--muted); line-height: 1.6; min-height: 4.8em; }
+								.card-actions { display: grid; gap: 10px; margin-top: auto; }
+								.card-btn { width: 100%; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; text-align: center; line-height: 1.1; background: #fff; color: #000; border-color: #fff; font-weight: 700; }
+								.card-btn.secondary-action { background: var(--panel-alt); color: var(--text); border-color: var(--border); }
+								.card-btn:hover { transform: translateY(-1px); }
+								.help-btn { position: fixed; top: 18px; right: 18px; width: 46px; height: 46px; display: grid; place-items: center; background: var(--panel-alt); color: var(--text); border: 1px solid var(--border); border-radius: 50%; box-shadow: var(--shadow); cursor: pointer; font-size: 1.2rem; font-weight: 800; line-height: 1; }
+								.modal { position: fixed; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(0,0,0,.9); z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
+								.modal.is-open { opacity: 1; pointer-events: auto; }
+								.modal.is-open .modal-card { transform: translateY(0) scale(1); opacity: 1; }
+								.modal-card h3 { margin: 0 0 10px; font-size: 1.4rem; }
+								.modal-card p { margin: 0 0 12px; color: var(--muted); }
+								.modal-card ul { margin: 0 0 18px; padding-left: 18px; color: var(--muted); line-height: 1.6; }
+								.modal-card li + li { margin-top: 8px; }
+								.close-btn { background: #fff; color: #000; border-color: #fff; }
+								@media (max-width: 720px) {
+									.launcher-shell { padding: 16px; }
+									.topbar { flex-direction: column; align-items: stretch; }
+									.search-group { width: 100%; }
+									.grid { grid-template-columns: 1fr; }
+									.card-actions { grid-template-columns: 1fr; }
+								}
+							</style>
+						</head>
+						<body>
+							<button class="help-btn" type="button" id="helpBtn" aria-label="Help">?</button>
+							<main class="launcher-shell">
+								<div class="launcher-wrap">
+									<section class="topbar">
+										<div class="title">
+											<h1>Pr0xy Launcher</h1>
+										</div>
+											<div class="search-group">
+												<input id="search" class="search" type="search" placeholder="Search proxies" autocomplete="off" aria-label="Search proxies" />
+											</div>
+									</section>
+									<section class="grid" id="grid">${cards}</section>
+								</div>
+							</main>
+							<div class="modal" id="helpModal" aria-hidden="true">
+								<div class="modal-card" role="dialog" aria-modal="true" aria-label="Help">
+									<h3>Quick help</h3>
+									<p>Pick a card, then choose a launch mode.</p>
+									<ul>
+										<li>Games: Selenite is suggested, try them all.</li>
+										<li>Movies: Use "cineby.sc" on one of the links.</li>
+										<li>Minecraft: Launch Minecraft from the launcher and use an unblocked server.</li>
+										<li>Better games: Use GeForce Now for real PC games and Crazygames for extra games.</li>
+									</ul>
+									<button class="close-btn" type="button" id="closeHelp">Close</button>
+								</div>
+							</div>
+							${'<scr' + 'ipt>'}
+								const search = document.getElementById("search");
+								const grid = document.getElementById("grid");
+								const helpBtn = document.getElementById("helpBtn");
+								const helpModal = document.getElementById("helpModal");
+								const closeHelp = document.getElementById("closeHelp");
+
+								function openAboutBlank(url) {
+									const popup = window.open("about:blank", "_blank");
+									if (!popup) return;
+									popup.document.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Pr0xy</title><style>html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#000;}iframe{position:fixed;inset:0;width:100%;height:100%;border:0;}</style></head><body><iframe src="' + url + '" referrerpolicy="no-referrer"></iframe></body></html>');
+									popup.document.close();
+								}
+
+								function showHelp() {
+									helpModal.classList.add("is-open");
+									helpModal.setAttribute("aria-hidden", "false");
+								}
+
+								function hideHelp() {
+									helpModal.classList.remove("is-open");
+									helpModal.setAttribute("aria-hidden", "true");
+								}
+
+								helpBtn.addEventListener("click", showHelp);
+								closeHelp.addEventListener("click", hideHelp);
+								helpModal.addEventListener("click", (event) => {
+									if (event.target === helpModal) hideHelp();
+								});
+								document.addEventListener("keydown", (event) => {
+									if (event.key === "Escape") hideHelp();
+								});
+
+								search.addEventListener("input", () => {
+									const query = search.value.trim().toLowerCase();
+									grid.querySelectorAll(".proxy-card").forEach((card) => {
+										card.style.display = card.dataset.search.includes(query) ? "flex" : "none";
+									});
+								});
+
+								grid.addEventListener("click", (event) => {
+									const button = event.target.closest("button[data-url]");
+									if (!button) return;
+									const url = button.dataset.url;
+									if (button.dataset.action === "blank") {
+										openAboutBlank(url);
+										return;
+									}
+									window.open(url, "_blank", "noopener");
+								});
+							${'</scr' + 'ipt>'}
+						</body>
+						</html>`;
+					};
+
+				function launchLauncher() {
+					const popup = window.open("about:blank", "_blank");
+					if (!popup) {
+						return;
 					}
 
-					let launcherHTML = '<!DOCTYPE html><html><head><title>My Drive - Google Drive</title>';
-					launcherHTML += '<style>body{background:#0f1220;color:white;font-family:system-ui;padding:24px;padding-top:20px;position:relative;}';
-					launcherHTML += 'a{color:#4c6fff;text-decoration:none;margin-right:6px;cursor:pointer;}a:hover{text-decoration:underline;}';
-					launcherHTML += 'h1{margin:0 0 4px 0;display:inline-block;}';
-					launcherHTML += '.info-text{margin:2px 0;}';
-					launcherHTML += '.help-btn{position:absolute;top:20px;right:24px;width:40px;height:40px;background:#1f233a;border:none;color:white;font-size:28px;font-weight:bold;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}';
-					launcherHTML += '.help-btn:hover{background:#2a2f4a;}';
-					launcherHTML += '.help-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:1000;align-items:center;justify-content:center;}';
-					launcherHTML += '.help-content{background:#0f1220;border:2px solid #4c6fff;padding:30px;max-width:700px;max-height:80vh;overflow-y:auto;border-radius:8px;}';
-					launcherHTML += '.help-content h2{margin-top:0;color:#4c6fff;}';
-					launcherHTML += '.help-content p{line-height:1.6;margin:12px 0;}';
-					launcherHTML += '.close-btn{background:#4c6fff;border:none;color:white;padding:8px 20px;cursor:pointer;border-radius:4px;margin-top:20px;}';
-					launcherHTML += '.close-btn:hover{background:#6080ff;}';
-					launcherHTML += '</style></head><body>';
-					launcherHTML += '<button class="help-btn" onclick="showHelp()">?</button>';
-					launcherHTML += '<h1>Proxy Launcher</h1>';
-					launcherHTML += '<h3>PLEASE READ EVERYTHING BELOW AND THE HELP SECTION (? button in the top right)</h3>';
-					launcherHTML += '<p class="info-text" style="opacity:0.7;">Spam R 4 times to escape</p>';
-					launcherHTML += '<p class="info-text" style="opacity:0.7;">By the way you can scroll there r more</p>';
-					launcherHTML += '<p class="info-text" style="color:orange;cursor:pointer;text-decoration:underline;" onclick="toggleDirectLinks()">IF YOU WANT TO USE THE PROXY IN FULL SCREEN PRESS THIS AND THEN ACCESS THE LINK. BE SURE TO HIDE THE URL THOUGH</p>';
-					launcherHTML += '<p class="info-text" style="color:red;">LINKS SOMETIMES GO DOWN BE PATIENT but its rare</p>';
-					launcherHTML += '<p class="info-text" style="color:yellow;font-weight:bold;">ALL PROXIES OPEN IN ABOUT:BLANK, PLEASE DON\'T EXPOSE LINK!!!</p>';
-					launcherHTML += '<div style="margin-top:16px;"></div>';
-					launcherHTML += list;
-					launcherHTML += '<div class="help-modal" id="helpModal" onclick="if(event.target===this)hideHelp()">';
-					launcherHTML += '<div class="help-content">';
-					launcherHTML += '<h2>HELP</h2>';
-					launcherHTML += '<p>The best overall proxy by far is <b>Doge</b> but please follow the instructions under the <b>Doge</b> link, and the best for <span style="color:#ff9500;">games</span> is <b>Selenite</b> and <b>Petezah</b> but for <span style="color:#ff9500;">games</span> I recommend you try them all. For real PC <span style="color:#ff9500;">games</span>, go on <b>Doge</b> and go to play.geforcenow.com. Login with a Geforce Now account that <u>YOU MADE AT HOME</u> and <u>YOU CONNECTED YOUR GAME ACCOUNTS TOO</u>. Also search how geforce now free works. For special and good <span style="color:#ff9500;">games</span> you won\'t find anywhere else, go to crazygames.com on <b>Doge</b>. For them <span style="color:#00ff00;">Minecraft</span> kids, go to <b>Doge</b> and either put in "darkfordge.surge.sh" and choose Game, OR go to <span style="color:#ff9500;">Games</span> on <b>Doge</b> and choose <span style="color:#00ff00;">Minecraft</span>. The second method is better (<u>HAS EVERY VERSION OF MINECRAFT UP TO 1.21!!! AND THEY GIVE YOU WORKING SERVERS</u>) but its a bit funky. For <span style="color:#ff0000;">movies</span>, go to <b>Doge</b> and go to "cineby.gd" and watch. <u>THIS IS IN GENERAL, BUT IN SOME PROXIES, YOU MAY GET ADS AND POPUPS JUST CLOSE THEM (<b>Doge</b> IS THE ONLY CONFIRMED PROXY TO HAVE NO ADS).</u></p>';
-					launcherHTML += '<button class="close-btn" onclick="hideHelp()">Close</button>';
-					launcherHTML += '</div></div>';
-					launcherHTML += '<scr' + 'ipt>';
-					launcherHTML += 'var showingDirect=false;';
-					launcherHTML += 'function showHelp(){document.getElementById("helpModal").style.display="flex";}';
-					launcherHTML += 'function hideHelp(){document.getElementById("helpModal").style.display="none";}';
-					launcherHTML += 'function toggleDirectLinks(){var links=document.querySelectorAll(".direct-link");showingDirect=!showingDirect;for(var i=0;i<links.length;i++){links[i].style.display=showingDirect?"inline":"none";}}';
-					launcherHTML += 'var r=0;var rTimeout;';
-					launcherHTML += 'document.addEventListener("keydown",function(e){';
-					launcherHTML += 'if(e.key.toLowerCase()==="r"){r++;clearTimeout(rTimeout);';
-					launcherHTML += 'rTimeout=setTimeout(function(){r=0;},1000);';
-					launcherHTML += 'if(r>=4){r=0;var g=window.open("about:blank","_blank");';
-					launcherHTML += 'if(g){g.document.write("<html><head><title>Google</title></head><body></body></html>");';
-					launcherHTML += 'g.document.close();g.location.href="https://google.com";}window.close();}}});';
-					launcherHTML += 'function openAB(url){var x=window.open("about:blank","_blank");';
-					launcherHTML += 'if(x){x.document.write("<html><head><title>My Drive - Google Drive</title></head><body style=\\"margin:0;overflow:hidden;\\"><iframe src=\\""+url+"\\" style=\\"width:100%;height:100%;border:none;position:fixed;top:0;left:0;\\"></iframe></body></html>");';
-					launcherHTML += 'x.document.close();}}';
-					launcherHTML += '</scr' + 'ipt></body></html>';
-
-					w.document.write(launcherHTML);
-					w.document.close();
-
+					popup.document.write(buildLauncherHTML());
+					popup.document.close();
 					window.location.href = "https://google.com";
 				}
 
-				document.addEventListener('keydown', (e) => {
-					if (e.code === 'Backquote') {
-						e.preventDefault();
-						openLauncher();
-					}
-				});
+				launchBtn.addEventListener("click", launchLauncher);
 			})();
 		</script>
 	</body>
