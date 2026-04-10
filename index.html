@@ -62,6 +62,61 @@
 				flex-wrap: wrap;
 			}
 
+			.prelaunch-modal {
+				position: fixed;
+				inset: 0;
+				display: grid;
+				place-items: center;
+				padding: 20px;
+				background: rgba(0, 0, 0, 0.86);
+				z-index: 1000;
+				opacity: 0;
+				pointer-events: none;
+				transition: opacity 180ms ease;
+			}
+
+			.prelaunch-modal.is-open {
+				opacity: 1;
+				pointer-events: auto;
+			}
+
+			.prelaunch-card {
+				width: min(520px, 100%);
+				padding: 24px;
+				border: 1px solid var(--border);
+				border-radius: 20px;
+				background: var(--panel);
+				box-shadow: var(--shadow);
+			}
+
+			.prelaunch-card h2 {
+				margin: 0;
+				font-size: clamp(1.8rem, 4.6vw, 2.35rem);
+				line-height: 1;
+				letter-spacing: -0.04em;
+			}
+
+			.prelaunch-card p {
+				margin: 12px 0 0;
+				color: var(--text);
+				line-height: 1.55;
+			}
+
+			.prelaunch-card p a {
+				display: inline-block;
+				margin-top: 8px;
+				color: #ffffff;
+				text-decoration: underline;
+				text-underline-offset: 2px;
+			}
+
+			.prelaunch-actions {
+				display: flex;
+				gap: 10px;
+				flex-wrap: wrap;
+				margin-top: 20px;
+			}
+
 			button {
 				appearance: none;
 				border: 1px solid var(--border);
@@ -101,8 +156,20 @@
 			</section>
 		</div>
 
+		<div class="prelaunch-modal" id="prelaunchModal" aria-hidden="true">
+			<div class="prelaunch-card" role="dialog" aria-modal="true" aria-label="Backup link notice">
+				<h2>Link not working?</h2>
+				<p>Use the new link as a backup or replacement, if it doesn't work be patient I am making a new system.<br /><a class="backup-link" href="https://studyeurope.edu.eu.org" target="_blank" rel="noopener noreferrer">studyeurope.edu.eu.org ↗</a></p>
+				<div class="prelaunch-actions">
+					<button class="primary" id="closePrelaunch" type="button">Close</button>
+					<button class="secondary" id="dontShowPrelaunch" type="button">Don't show again</button>
+				</div>
+			</div>
+		</div>
+
 		<script>
 			(function () {
+				const PRELAUNCH_SUPPRESSED_KEY = "prelaunchBackupSuppressed";
 				const proxies = [
 					{ name: "Intersteller", host: "interstellerkeepthisasecret.undoanarchy.rocks", desc: "Familiar layout and a steady default choice." },
 					{ name: "Selenite", host: "selenitekeepthisasecret.undoanarchy.rocks", desc: "Good for games and quick navigation.", featured: true },
@@ -117,6 +184,28 @@
 				];
 
 				const launchBtn = document.getElementById("launchBtn");
+				const prelaunchModal = document.getElementById("prelaunchModal");
+				const closePrelaunch = document.getElementById("closePrelaunch");
+				const dontShowPrelaunch = document.getElementById("dontShowPrelaunch");
+				const backupLink = prelaunchModal.querySelector(".backup-link");
+
+				function hasSuppressedPrelaunch() {
+					return localStorage.getItem(PRELAUNCH_SUPPRESSED_KEY) === "1";
+				}
+
+				function suppressPrelaunch() {
+					localStorage.setItem(PRELAUNCH_SUPPRESSED_KEY, "1");
+				}
+
+				function showPrelaunchModal() {
+					prelaunchModal.classList.add("is-open");
+					prelaunchModal.setAttribute("aria-hidden", "false");
+				}
+
+				function hidePrelaunchModal() {
+					prelaunchModal.classList.remove("is-open");
+					prelaunchModal.setAttribute("aria-hidden", "true");
+				}
 
 				function buildLauncherHTML() {
 					const cards = proxies.map((proxy, index) => {
@@ -289,7 +378,26 @@
 					window.location.href = "https://google.com";
 				}
 
+				closePrelaunch.addEventListener("click", () => {
+					hidePrelaunchModal();
+				});
+
+				dontShowPrelaunch.addEventListener("click", () => {
+					suppressPrelaunch();
+					hidePrelaunchModal();
+				});
+
+				prelaunchModal.addEventListener("click", (event) => {
+					if (event.target === prelaunchModal) {
+						hidePrelaunchModal();
+					}
+				});
+
 				launchBtn.addEventListener("click", launchLauncher);
+
+				if (!hasSuppressedPrelaunch()) {
+					showPrelaunchModal();
+				}
 			})();
 		</script>
 	</body>
